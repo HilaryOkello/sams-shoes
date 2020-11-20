@@ -1,0 +1,114 @@
+.navbar-nav{
+	padding-left:0px;
+	font-family: Montserrat;
+	font-style: normal;
+	font-weight: bold;
+	color: #101010;
+}
+.nav-logo{
+	font-style: italic;
+	font-weight: bold;
+	font-size: 20px;
+}
+
+.newproduct{
+	padding-bottom:100px;
+	background-image: url(images/group.svg);
+	background-repeat: no-repeat;
+	background-position: center;
+}
+.corner-text{
+	padding-top:325px;
+}
+.hed-1{
+	font-family: Montserrat;
+	font-style: normal;
+	font-weight: 800;
+	font-size: 40px;
+	letter-spacing: -0.05em;
+	color: #101010;
+}
+.par-1{
+	padding-top:10px;
+	font-family: Poppins;
+	font-style: normal;
+	font-weight: 500;
+	font-size: 25px;
+}
+.btn-dark{
+	position: relative;
+	width: 20%;
+	height: 9%;
+	font-family: Poppins;
+	font-style: normal;
+	font-weight: 500;
+	font-size: 25px;
+	text-align: center;
+	background: #101010;
+}
+
+.row-0{
+	padding-top:0px;
+	display: flex;
+	justify-content: center;
+	flex-direction: row;
+}
+
+.card-title-0{
+	font-family: Montserrat;
+	font-style: normal;
+	font-weight: 700;
+	font-size: 20px;
+	color:#FFFFFF;
+	
+}
+.card-text{
+	padding-top:210px;
+    font-weight: 700;
+    color:#FFFFFF;
+}
+
+.newreleases{
+	padding-top:50px;
+}  
+.scrolling-wrapper {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+}
+.card {
+    display: inline-block;
+}
+.card-1{
+	width: 40%;
+	height: 40%;
+    display: inline-block;
+}
+
+.mail-list{
+	padding-top:30px;
+	text-align: center;
+	padding-bottom:50px;
+}
+
+.hed-2{
+	font-family: Montserrat;
+	font-style: normal;
+	font-weight: 600;
+	font-size: 30px;
+	letter-spacing: -0.05em;
+	color: #101010;
+}
+
+.btn-outline-dark{
+	align-items: center;
+    text-align: center;
+    font-family: Poppins;
+	font-style: normal;
+	font-weight: 400;
+	font-size: 30px;
+}
+.row-1{
+	padding-left:200px;
+	padding-right:180px;
+}
