@@ -53,6 +53,10 @@
 	justify-content: center;
 	flex-direction: row;
 }
+a.custom-card,
+a.custom-card:hover {
+  color: inherit;
+}
 
 .card-title-0{
 	font-family: Montserrat;
@@ -62,11 +66,19 @@
 	color:#FFFFFF;
 	
 }
+.card-title{
+    font-family: Montserrat;
+	font-style: normal;
+	font-weight: 550;
+	font-size: 20px;
+	color:#101010;
+}
 .card-text{
-	padding-top:210px;
+	padding-top:180px;
     font-weight: 700;
     color:#FFFFFF;
 }
+
 
 .newreleases{
 	padding-top:50px;
@@ -106,9 +118,28 @@
     font-family: Poppins;
 	font-style: normal;
 	font-weight: 400;
-	font-size: 30px;
+	border-width:medium;
+	
+}
+.search-inp{
+	border-width:medium;
+	color: #101010;
 }
 .row-1{
 	padding-left:200px;
 	padding-right:180px;
+}
+
+.add-button{
+	padding-top:50px;
+    padding-left:50px;
+    ;
+}
+.add-button-style{
+	font-size: 20px;
+	width:150px;
+	border-width:medium;
+}
+.content-main{
+		padding-top:70px;
 }

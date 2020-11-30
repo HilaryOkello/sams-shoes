@@ -4,9 +4,10 @@
 /* @var $content string */
 
 use yii\helpers\Html;
+use yii\helpers\Url;
+use yii\bootstrap4\Button;
 use yii\bootstrap4\Nav;
 use yii\bootstrap4\NavBar;
-use yii\widgets\Breadcrumbs;
 use frontend\assets\AppAsset;
 use common\widgets\Alert;
 
@@ -29,42 +30,38 @@ AppAsset::register($this);
 <?php $this->beginBody() ?>
 
 <div class="wrap">
+<?php if(Yii::$app->user->can('admin')): ?>
     <?php
     NavBar::begin();
     echo Nav::widget([
         'items' => [
-            ['label' => 'Womens', 'url' => ['/site/womens']],
-            ['label' => 'Mens', 'url' => ['/site/mens']],
-            ['label' => 'Kids', 'url' => ['/site/kids']],
-            ['label' => 'Accessories', 'url' => ['/site/accessories']],
-            ['label' => 'Sale', 'url' => ['/site/sales']],
-            ['label' => 'Sam\'s Shoes', 'url' => ['/site/index'],'options'=>['class'=>'nav-logo']],
+            ['label' => 'Womens', 'url' => ['/shoe/womens']],
+            ['label' => 'Mens', 'url' => ['/shoe/mens']],
+            ['label' => 'Kids', 'url' => ['/shoe/kids']],
+            ['label' => 'Accessories', 'url' => ['/shoe/accessories']],
+            ['label' => 'Sale', 'url' => ['/shoe/sales']],
+            ['label' => 'Sam\'s Shoes', 'url' => ['site/index'],'options'=>['class'=>'nav-logo']],
             ['label' =>
                 '<form class="form-inline d-flex justify-content-center md-form form-sm">
                 <input class="form-control form-control-sm mr-3 w-75" type="text" placeholder="Search"
                 aria-label="Search">
                 <i class="fas fa-search" aria-hidden="true"></i>
-                </form>',
+                </form>'
             ],
-            [
-                'label' => '<i class="fas fa-shopping-bag" align="right"></i>',
-                'items' => [
-                    ['label' => 'My cart', 'url' => '#'],
-                    ['label' => 'Check Out', 'url' => '#'],
-                ],'options'=>['class'=>'nav-icons-loc']],
             [
                 'label' => '<i class="far fa-bell" align="right"></i>',
                 'items' => [
-                    ['label' => 'notification 1', 'url' => '#'],
-                    ['label' => 'notification 2', 'url' => '#'],
+                    ['label' => 'notification 1', 'url' => 'site/message'],
+                    ['label' => 'notification 2', 'url' => 'site/message'],
                 ],'options'=>['class'=>'nav-icons-loc']],
             [
-                'label' => '<i class="far fa-user" align="right"></i>',
+                'label' => '<i class="fas fa-user-cog" align="right"></i>',
                 'items' => [
-                    ['label' => 'Sign up', 'url' => ['/site/signup']],
-                    ['label' => 'Login', 'url' => ['/site/login']],
-                    ['label' => 'My profile', 'url' => ['/site/profile']],
-                    ['label' => 'Logout', 'url' => ['/site/logout'],
+                    ['label' => 'Dashboard', 'url' => ['site/dashboard']],
+                    ['label' => 'Orders', 'url' => ['/ordered-shoes/index']],
+                    ['label' => 'Inventory', 'url' => ['/shoe/index']],
+                    ['label' => 'Add Items', 'url' => ['/shoe/create']],
+                    ['label' => 'Logout (' . Yii::$app->user->identity->username . ')', 'url' => ['/site/logout'],
                         'linkOptions'=> [
                             'data-method' => 'post'
                         ]
@@ -79,7 +76,87 @@ AppAsset::register($this);
     ]);
     NavBar::end();
     ?>
-        <div>
+<?php else: ?>
+   <?php
+    NavBar::begin([
+        'options' => ['class' => 'navbar-expand-lg navbar-light bg-light shadow-sm fixed-top','style' => 'display:flex; justify-content:center; float:none;,'],
+        'innerContainerOptions' => [
+            'class' => 'container-fluid'
+        ]
+    ]);
+    $menuItems[] =  ['label' => 'Womens', 'url' => ['/shoe/womens']];
+    $menuItems[] = ['label' => 'Mens', 'url' => ['/shoe/mens']];
+    $menuItems[] =  ['label' => 'Kids', 'url' => ['/shoe/kids']];
+    $menuItems[] = ['label' => 'Accessories', 'url' => ['/shoe/accessories']];
+    $menuItems[] = ['label' => 'Sale', 'url' => ['/shoe/sales']];
+    $menuItems[] = ['label' => 'Sam\'s Shoes', 'url' => ['/site/index'],'options'=>['class'=>'nav-logo']];
+    ?>
+ <form action="<?php echo Url::to(['/shoe/search']) ?>" class="form-inline border-dark rounded-pill ml-5">
+ <input class="form-control form-control-sm border-dark rounded-pill mr-2 w-85 search-inp" type="text" placeholder="Search"
+        name="keyword"
+        value="<?php echo Yii::$app->request->get('keyword') ?>"
+        aria-label="Search">
+   <button class="btn btn-outline-dark btn-sm rounded-pill"><i class="fas fa-search" aria-hidden="true"></i></button>
+        
+ </form>
+<?php
+if (Yii::$app->user->isGuest) {
+    $menuItems[] = [
+                'label' => '<i class="fas fa-shopping-bag"></i>',
+                'items' => [
+                    ['label' => 'My cart', 'url' => ['/site/login']],
+                    ['label' => 'Check Out', 'url' => ['/site/login']],
+                ],'options'=>['class'=>'nav-icons-loc']];
+} else {
+    $menuItems[] = [
+        'label' => '<i class="fas fa-shopping-bag"></i>',
+        'items' => [
+            ['label' => 'My cart', 'url' => ['/shoe/cart']],
+            ['label' => 'Check Out', 'url' => ['/ordered-shoes/create']],
+        ],'options'=>['class'=>'nav-icons-loc']];
+    $menuItems[] = [
+                'label' => '<i class="far fa-bell"></i>',
+                'items' => [
+                    ['label' => 'notification 1', 'url' => '#'],
+                    ['label' => 'notification 2', 'url' => '#'],
+                ],'options'=>['class'=>'nav-icons-loc']];
+}
+if (Yii::$app->user->isGuest) {
+    $menuItems[] = [
+                'label' => '<i class="far fa-user"></i>',
+                'items' => [
+                    ['label' => 'Sign up', 'url' => ['/site/signup']],
+                    ['label' => 'Login', 'url' => ['/site/login']],
+                ],'options'=>['class'=>'nav-icons-loc']];
+} else {
+        $menuItems[] = [
+            'label' => '<i class="far fa-user"></i>',
+            'items' => [
+                ['label' => 'My profile', 'url' => ['/site/profile']],
+                ['label' => 'Logout (' . Yii::$app->user->identity->username . ')', 'url' => ['/site/logout'],
+                    'linkOptions'=> [
+                        'data-method' => 'post'
+                    ]
+                ],
+            ],'options'=>['class'=>'nav-icons-loc']];
+    }
+
+echo Nav::widget([
+    'options' => ['class' => 'navbar-nav navbar-expand-lg','style' => 'display:flex; justify-content:center; float:none;,'],
+    'items' => $menuItems,
+    'encodeLabels' => false,
+    
+]);
+    NavBar::end();
+    ?>
+ 
+ <?php endif; ?>
+<?php if(Yii::$app->user->can('admin')){?>
+	<div class="add-button">
+	<?= Html::a('+Add Item', ['/shoe/create'], ['class'=>'btn btn-outline-dark btn-sm rounded-pill add-button-style']) ?>
+    </div>
+     <?php }?>
+        <div class="content-main">
             <?= Alert::widget() ?>
             <?= $content ?>
         </div>

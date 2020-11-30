@@ -41,8 +41,12 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'sams/site/index' => '/sams/'
             ],
         ],
+        'assetManager' => [
+            'appendTimestamp' => true
+        ]
         
     ],
     'params' => $params,

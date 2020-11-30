@@ -12,8 +12,10 @@ use yii\filters\AccessControl;
 use common\models\LoginForm;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
+use frontend\models\Shoe;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
+use yii\data\ActiveDataProvider;
 
 /**
  * Site controller
@@ -74,9 +76,18 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $dataProvider = new ActiveDataProvider([
+            'query' => Shoe::find()->latest(),
+        ]);
+        return $this->render('index', [
+            'dataProvider' => $dataProvider
+        ]);
     }
-
+    public function actionDashboard()
+    {
+        return $this->render('dashboard');
+    }
+    
     /**
      * Logs in a user.
      *

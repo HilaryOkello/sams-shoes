@@ -5,12 +5,12 @@
 /* @var $model \frontend\models\SignupForm */
 
 use yii\helpers\Html;
-use yii\bootstrap\ActiveForm;
+use yii\bootstrap4\ActiveForm;
 
 $this->title = 'Signup';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="site-signup">
+<div class="container site-signup">
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>Please fill out the following fields to signup:</p>
@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?= $form->field($model, 'password')->passwordInput() ?>
 
                 <div class="form-group">
-                    <?= Html::submitButton('Signup', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
+                    <?= Html::submitButton('Signup', ['class' => 'btn btn-outline-dark', 'name' => 'signup-button']) ?>
                 </div>
 
             <?php ActiveForm::end(); ?>

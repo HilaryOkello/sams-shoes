@@ -1,6 +1,7 @@
 html,
 body {
     height: 100%;
+    background-color:F9F9F9;
 }
 
 .wrap {
@@ -23,7 +24,7 @@ body {
 	font-weight: 300;
 	font-size: 15px;
 	margin:auto;
-	color:#DCDCDC;
+	color:#696969;
 }
 .jumbotron {
     text-align: center;
