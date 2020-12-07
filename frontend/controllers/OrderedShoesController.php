@@ -4,6 +4,7 @@ namespace frontend\controllers;
 
 use Yii;
 use frontend\models\OrderedShoes;
+use frontend\models\Shoe;
 use frontend\models\OrderedShoesSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -64,16 +65,15 @@ class OrderedShoesController extends Controller
      */
     public function actionCreate()
     {
-        $model = new OrderedShoes();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->order_id]);
-        }
-
-        return $this->render('create', [
-            'model' => $model,
-        ]);
+        $shoe = 24;
+        $id = \Yii::$app->user->id;
+            $model = new OrderedShoes();
+            $model->id = $id;
+            $model->shoe_id = $shoe;
+            $model->save();
     }
+    
+    
 
     /**
      * Updates an existing OrderedShoes model.
@@ -124,4 +124,5 @@ class OrderedShoesController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
 }

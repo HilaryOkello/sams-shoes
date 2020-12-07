@@ -5,11 +5,21 @@ use yii\helpers\Url;
 /** @var $model \frontend\models\Shoe */
 
 ?>
-<a class="card-title" href="<?php echo Url::to(['/shoe/view', 'id' => $model->shoe_id]) ?>">
     <div class="card">
-        <img class="" src="<?php echo $model->getImageUrl() ?>" alt="Card image cap">
-        <div class="card-body">
-        <h5 class="card-title"><?php echo $model->shoe_name ?><br><?php echo 'Ksh.' .$model->shoe_price ?></h5> 
-        </div>
-    </div
-</a>
+		<a class="card-title" href="<?php echo Url::to(['/shoe/view', 'id' => $model->shoe_id]) ?>">
+            <img class="" src="<?php echo $model->getImageUrl() ?>" alt="Card image cap">
+            <div class="card-body">
+            <h5 class="card-title"><?php echo $model->shoe_name,'        Ksh.' .$model->shoe_price?></h5>
+            </div> 
+		</a>
+		<div class="container">
+    <?php \yii\widgets\Pjax::begin() ?>
+        <a href="<?php echo Url::to(['/shoe/add']) ?>"
+         class="btn btn-outline-dark btn-sm"
+         data-method="post" data-pjax="1" >Add to cart</a> 
+         <a href="<?php echo Url::to(['/shoe/add']) ?>">
+         <i class="far fa-heart"></i> Save</a>
+    <?php \yii\widgets\Pjax::end() ?>
+		</div>
+        
+    </div>

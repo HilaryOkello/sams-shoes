@@ -11,7 +11,7 @@ use yii\web\NotFoundHttpException;
 use yii\web\UploadedFile;
 use yii\filters\VerbFilter;
 use frontend\models\Brand;
-
+use frontend\models\OrderedShoes;
 /**
  * ShoeController implements the CRUD actions for Shoe model.
  */
@@ -213,7 +213,17 @@ class ShoeController extends Controller
         }
         return false;
     }
-
+    
+/*     public function actionAdd()
+    {
+        $added = Shoe::model()->findByPk(Yii::app()->request->getParam('id'));
+        $id = \Yii::$app->user->id;
+        $model = new OrderedShoes();
+        $model->id = $id;
+        $model->shoe_id = $added;
+        $model->save();
+    }
+ */
     /**
      * Updates an existing Shoe model.
      * If update is successful, the browser will be redirected to the 'view' page.

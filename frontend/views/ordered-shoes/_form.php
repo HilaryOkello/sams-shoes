@@ -14,7 +14,7 @@ use yii\bootstrap4\ActiveForm;
 
   <!--<?= $form->field($model, 'id')->textInput() ?>
 
-    <?= $form->field($model, 'shoe_id')->textInput() ?>--> 
+    <?= $form->field($model, 'shoe_id')->textInput() ?>-->
 
     <?= $form->field($model, 'payment_method')->dropDownList([ 'M-PESA' => 'M-PESA', 'Card Payment' => 'Card Payment', 'On Delivery' => 'On Delivery', ], ['prompt' => '']) ?>
 

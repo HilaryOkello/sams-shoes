@@ -4,7 +4,6 @@ namespace frontend\models;
 
 use common\models\User;
 use Yii;
-
 /**
  * This is the model class for table "{{%ordered_shoes}}".
  *
@@ -37,7 +36,7 @@ class OrderedShoes extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'shoe_id', 'payment_method', 'delivery_method', 'expected_delivery_date', 'actual_delivery_date', 'status', 'address'], 'required'],
+            [['id', 'shoe_id'], 'required'],
             [['id', 'shoe_id'], 'integer'],
             [['payment_method', 'delivery_method', 'status'], 'string'],
             [['expected_delivery_date', 'actual_delivery_date'], 'safe'],
@@ -92,5 +91,12 @@ class OrderedShoes extends \yii\db\ActiveRecord
     public static function find()
     {
         return new \frontend\models\query\OrderedShoesQuery(get_called_class());
+    }
+    public function isAdded($order_id)
+    {
+        return OrderedShoes::find()->andWhere([
+            'shoe_id' => $this->id,
+            'order_id' => $order_id
+        ])->one();
     }
 }
