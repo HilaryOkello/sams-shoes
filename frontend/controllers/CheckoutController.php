@@ -4,20 +4,18 @@ namespace frontend\controllers;
 
 use Yii;
 use frontend\models\Checkout;
-use frontend\models\OrderedShoes;
-use frontend\models\Shoe;
-use frontend\models\OrderedShoesSearch;
+use frontend\models\CheckoutSearch;
 use yii2mod\rbac\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\helpers\ArrayHelper;
-use yii\data\ActiveDataProvider;
+use kartik\mpdf\Pdf;
+
 
 /**
- * OrderedShoesController implements the CRUD actions for OrderedShoes model.
+ * CheckoutController implements the CRUD actions for Checkout model.
  */
-class OrderedShoesController extends Controller
+class CheckoutController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -28,13 +26,12 @@ class OrderedShoesController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    
+                    'delete' => ['POST'],
                 ],
-                
             ],
             'access' => [
                 'class' => AccessControl::class,
-                'only' => ['create', 'index','cart', 'view'],
+                'only' => ['create', 'index', 'view'],
                 'rules' => [
                     [
                         'allow' => true,
@@ -46,12 +43,12 @@ class OrderedShoesController extends Controller
     }
 
     /**
-     * Lists all OrderedShoes models.
+     * Lists all Checkout models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new OrderedShoesSearch();
+        $searchModel = new CheckoutSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -61,7 +58,7 @@ class OrderedShoesController extends Controller
     }
 
     /**
-     * Displays a single OrderedShoes model.
+     * Displays a single Checkout model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -72,62 +69,63 @@ class OrderedShoesController extends Controller
             'model' => $this->findModel($id),
         ]);
     }
+    public function actionGenPdf($id)
+    {
+       $pdf_content= $this->renderPartial('view-pdf', [
+            'model' => $this->findModel($id),
+        ]);
+       $pdf= new Pdf([
+           'format'=>Pdf::FORMAT_A4,
+           'content'=>$pdf_content,
+       ]);
+       return $pdf->render();
+    }
 
     /**
-     * Creates a new OrderedShoes model.
+     * Creates a new Checkout model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate($shoe_id, $serial_number, $shoe_name, $shoe_price)
+    public function actionCreate()
     {
-        $model= new Shoe;
-        $quantity=1;
-        $id = \Yii::$app->user->id;
-        $added= Shoe:: isAdded($shoe_id);
-        if(!$added){
-            $added = new OrderedShoes();
-            $added->id = $id;
-            $added->shoe_id = $shoe_id;
-            $added->shoe_name = $shoe_name;
-            $added->quantity = $quantity;
-            $added->shoe_price = $shoe_price;
-            $added->serial_number = $serial_number;
-            $added->save();
-     
-        } else {
-            $added->delete();
+        $model = new Checkout();
+        $model->id=Yii::$app->user->id;
+        /* $adminm='admin@samss.com'; */
+        
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            /* \Yii::$app->mailer->compose([
+                'html' => 'order-html', 'text' => 'order-text'
+            ], [
+                'model' => Yii::$app->user->can('admin'),
+            ])
+            ->setFrom(\Yii::$app->params['senderEmail'])
+            ->setTo($adminm)
+            ->setSubject('You have new orders')
+            ->send(); */
+            Yii::$app->session->setFlash('success', 'Your order was placed successfully');
+            return $this->redirect(['view', 'id' => $model->checkout_id]);
+            
         }
-        return $this->renderAjax('/shoe\addsavbutt', [
+        
+        return $this->render('create', [
             'model' => $model,
         ]);
-       
-    
     }
-    public function actionCart()
-    {
-        $dataProvider = new ActiveDataProvider([
-            'query' => OrderedShoes::find()->latest(),
-        ]);
-        $item= ArrayHelper::map(Checkout::find()
-            ->where(['id'=> \Yii::$app->user->id])
-            ->where(['status'=>0])
-           ->all(), 'item_ids', 'item_ids');
-        if($items=implode(',', $item)){
-        $this->updateAfterCheckout($items);
-       }
-        return $this->render('cart', [
-            'dataProvider' => $dataProvider
-        ]);
-    }
-    public function updateAfterCheckout($items){
-        $command = \Yii::$app->db->createCommand("UPDATE ordered_shoes SET status=1 WHERE order_id IN(.$items)");
+    public function actionShip($checkout_id){
+        $command = \Yii::$app->db->createCommand('UPDATE checkout SET status=1 WHERE checkout_id='.$checkout_id);
         $command->execute();
-        return true;
+        return $this->redirect(['index']);
+    }
+    public function actionDeliver($checkout_id){
+        $command = \Yii::$app->db->createCommand('UPDATE checkout SET status=2 WHERE checkout_id='.$checkout_id);
+        $command->execute();
+        return $this->redirect(['index']);
     }
     
 
     /**
-     * Updates an existing OrderedShoes model.
+     * Updates an existing Checkout model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -138,7 +136,7 @@ class OrderedShoesController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->order_id]);
+            return $this->redirect(['view', 'id' => $model->checkout_id]);
         }
 
         return $this->render('update', [
@@ -147,7 +145,7 @@ class OrderedShoesController extends Controller
     }
 
     /**
-     * Deletes an existing OrderedShoes model.
+     * Deletes an existing Checkout model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -157,23 +155,22 @@ class OrderedShoesController extends Controller
     {
         $this->findModel($id)->delete();
 
-        return $this->redirect(['cart']);
+        return $this->redirect(['index']);
     }
 
     /**
-     * Finds the OrderedShoes model based on its primary key value.
+     * Finds the Checkout model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return OrderedShoes the loaded model
+     * @return Checkout the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = OrderedShoes::findOne($id)) !== null) {
+        if (($model = Checkout::findOne($id)) !== null) {
             return $model;
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
-
 }

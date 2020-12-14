@@ -73,13 +73,11 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="col-sm-4">
 <img class="border shadow-lg" src="<?php echo $model->getImageUrl() ?>" alt="Card image cap">
 <h5 class="card-title"><?php echo $model->shoe_name,'        Ksh.' .$model->shoe_price?></h5> 
-    <?php \yii\widgets\Pjax::begin() ?>
-        <a href="<?php echo Url::to(['/ordered-shoes/create']) ?>"
-         class="btn btn-outline-dark btn-sm"
-         data-method="post" data-pjax="1" >Add to cart</a> 
-         <a href="<?php echo Url::to(['/orderded-shoes/create']) ?>">
-         <i class="far fa-heart"></i> Save</a>
-    <?php \yii\widgets\Pjax::end() ?>
+<?php \yii\widgets\Pjax::begin() ?>
+<?php echo $this->render('addsavbutt', [
+                    'model' => $model
+                ]) ?>
+<?php \yii\widgets\Pjax::end() ?>
 
 </div>
 <div class="col-sm-8">

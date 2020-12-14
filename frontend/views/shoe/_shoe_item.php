@@ -3,6 +3,7 @@
 use yii\helpers\Url;
 
 /** @var $model \frontend\models\Shoe */
+/* @var $this yii\web\View */
 
 ?>
     <div class="card">
@@ -14,11 +15,9 @@ use yii\helpers\Url;
 		</a>
 		<div class="container">
     <?php \yii\widgets\Pjax::begin() ?>
-        <a href="<?php echo Url::to(['/shoe/add']) ?>"
-         class="btn btn-outline-dark btn-sm"
-         data-method="post" data-pjax="1" >Add to cart</a> 
-         <a href="<?php echo Url::to(['/shoe/add']) ?>">
-         <i class="far fa-heart"></i> Save</a>
+        <?= $this->render('addsavbutt', [
+        'model' => $model,
+    ]) ?>
     <?php \yii\widgets\Pjax::end() ?>
 		</div>
         

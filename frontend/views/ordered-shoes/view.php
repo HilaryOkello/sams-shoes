@@ -32,12 +32,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'order_id',
             'id',
             'shoe_id',
-            'payment_method',
-            'delivery_method',
-            'expected_delivery_date',
-            'actual_delivery_date',
+            'serial_number',
+            'shoe_name',
+            'shoe_price',
+            'quantity',
             'status',
-            'address',
         ],
     ]) ?>
 

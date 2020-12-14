@@ -46,10 +46,7 @@ class ShoeController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
-    public function actionCart()
-    {
-        return $this->render('cart');
-    }
+    
     public function actionShop()
     {
         $dataProvider = new ActiveDataProvider([
@@ -143,8 +140,11 @@ class ShoeController extends Controller
      */
     public function actionView($id)
     {
+
         return $this->render('view', [
             'model' => $this->findModel($id),
+            
+            
         ]);
     }
 
@@ -216,7 +216,7 @@ class ShoeController extends Controller
     
 /*     public function actionAdd()
     {
-        $added = Shoe::model()->findByPk(Yii::app()->request->getParam('id'));
+        $added = Shoe::model()->findByPk
         $id = \Yii::$app->user->id;
         $model = new OrderedShoes();
         $model->id = $id;

@@ -2,6 +2,8 @@
 
 namespace frontend\models\query;
 
+use Yii;
+
 /**
  * This is the ActiveQuery class for [[\frontend\models\OrderedShoes]].
  *
@@ -30,5 +32,9 @@ class OrderedShoesQuery extends \yii\db\ActiveQuery
     public function one($db = null)
     {
         return parent::one($db);
+    }
+    public function latest()
+    {
+        return $this->orderBy(['id' => Yii::$app->user->id])->where(['status'=>0]);
     }
 }

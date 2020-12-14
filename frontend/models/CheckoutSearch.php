@@ -4,12 +4,12 @@ namespace frontend\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use frontend\models\OrderedShoes;
+use frontend\models\Checkout;
 
 /**
- * OrderedShoesSearch represents the model behind the search form of `frontend\models\OrderedShoes`.
+ * CheckoutSearch represents the model behind the search form of `frontend\models\Checkout`.
  */
-class OrderedShoesSearch extends OrderedShoes
+class CheckoutSearch extends Checkout
 {
     /**
      * {@inheritdoc}
@@ -17,8 +17,8 @@ class OrderedShoesSearch extends OrderedShoes
     public function rules()
     {
         return [
-            [['order_id', 'id', 'shoe_id', 'serial_number', 'shoe_price', 'quantity', 'status'], 'integer'],
-            [['shoe_name'], 'safe'],
+            [['checkout_id', 'id', 'amount', 'status'], 'integer'],
+            [['items', 'item_ids', 'payment_method', 'address'], 'safe'],
         ];
     }
 
@@ -40,7 +40,7 @@ class OrderedShoesSearch extends OrderedShoes
      */
     public function search($params)
     {
-        $query = OrderedShoes::find();
+        $query = Checkout::find();
 
         // add conditions that should always apply here
 
@@ -58,16 +58,16 @@ class OrderedShoesSearch extends OrderedShoes
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'order_id' => $this->order_id,
+            'checkout_id' => $this->checkout_id,
             'id' => $this->id,
-            'shoe_id' => $this->shoe_id,
-            'serial_number' => $this->serial_number,
-            'shoe_price' => $this->shoe_price,
-            'quantity' => $this->quantity,
+            'amount' => $this->amount,
             'status' => $this->status,
         ]);
 
-        $query->andFilterWhere(['like', 'shoe_name', $this->shoe_name]);
+        $query->andFilterWhere(['like', 'items', $this->items])
+            ->andFilterWhere(['like', 'item_ids', $this->item_ids])
+            ->andFilterWhere(['like', 'payment_method', $this->payment_method])
+            ->andFilterWhere(['like', 'address', $this->address]);
 
         return $dataProvider;
     }

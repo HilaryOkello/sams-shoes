@@ -9,9 +9,11 @@ use yii\bootstrap4\Button;
 use yii\bootstrap4\Nav;
 use yii\bootstrap4\NavBar;
 use frontend\assets\AppAsset;
+use frontend\models\OrderedShoes;
 use common\widgets\Alert;
 
 AppAsset::register($this);
+$cart=OrderedShoes::find()->latest()->count();
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -111,8 +113,8 @@ if (Yii::$app->user->isGuest) {
     $menuItems[] = [
         'label' => '<i class="fas fa-shopping-bag"></i>',
         'items' => [
-            ['label' => 'My cart', 'url' => ['/shoe/cart']],
-            ['label' => 'Check Out', 'url' => ['/ordered-shoes/create']],
+            ['label' => 'My cart', 'url' => ['/ordered-shoes/cart']],
+            ['label' => 'Check Out', 'url' => ['/checkout/create']],
         ],'options'=>['class'=>'nav-icons-loc']];
     $menuItems[] = [
                 'label' => '<i class="far fa-bell"></i>',

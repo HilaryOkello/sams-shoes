@@ -168,4 +168,13 @@ class Shoe extends \yii\db\ActiveRecord
     {
         return Url::to('@web/frontend/web/storage/thumbs/' . $this->serial_number. '.jpg', true);
     }
+    public function isAdded($shoe_id)
+    {
+        return OrderedShoes::find()->andWhere([
+            'id' => \Yii::$app->user->id,
+            'shoe_id' => $shoe_id,
+            
+        ])->one();
+    }
+    
 }
